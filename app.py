@@ -1,11 +1,11 @@
+from wsgiref.simple_server import WSGIServer
 from flask import Flask, request, jsonify
 from ultralytics import YOLO
 from ProcessServer import Producer, Consumer
-import logging, json, queue, utils
+import logging, json, queue, utils, Config
 
 # 配置 logging
 logging.basicConfig(filename = "Logs/app.log", level = logging.INFO)
-logging.basicConfig(filename = "Logs/app.log", level = logging.ERROR)
 
 app = Flask(__name__)
 
@@ -54,31 +54,20 @@ def test():
 
 # 启动服务
 def StartServer():
-    app.run(debug = True, host = "0.0.0.0")
+    try:
+        ip = Config.ip
+        port = Config.port
+        httpServer = WSGIServer((ip, port), app)
+        httpServer.serve_forever()
+        curTime = utils.GetTime()
+        logging.info(f"[{curTime}]Server started at http://{ip}:{port}")
+    except Exception as e:
+        raise e
+
 
 
 if __name__ == "__main__":
     try:
-        # 加载检测排气扇模型
-        exhaustFanModel = YOLO(model = "Weights/exhaustFan.pt", task = "detect")
-        curTime = utils.GetTime()
-        logging.info(f"[{curTime}]排气扇检测模型加载成功!")
-
-        # 加载检测煤气罐模型
-        gasTankModel = YOLO(model = "Weights/gasTank.pt", task = "detect")
-        curTime = utils.GetTime()
-        logging.info(f"[{curTime}]煤气罐检测模型加载成功!")
-
-        # 加载三通检测模型
-        gasTeeModel = YOLO(model = "Weights/gasTee.pt", task = "detect")
-        curTime = utils.GetTime()
-        logging.info(f"[{curTime}]三通检测模型加载成功!")
-
-        # 加载调压阀检测模型
-        regulatorModel = YOLO(model = "Weights/regulator.pt", task = "detect")
-        curTime = utils.GetTime()
-        logging.info(f"[{curTime}]调压阀检测模型加载成功!")
-
         consumer = Consumer(ThreadName = "consumerThread", DataQueue = dataQueue)
         consumer.start()
         StartServer()

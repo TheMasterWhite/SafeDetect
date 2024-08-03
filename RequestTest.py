@@ -4,7 +4,7 @@ import requests, json
 
 
 if __name__ == "__main__":
-    url = 'http://192.168.1.37:5000/Detect'
+    url = 'http://192.168.1.37:8000/Detect'
 
     data = {
         "requestId": "10086",
