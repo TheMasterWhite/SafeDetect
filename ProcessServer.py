@@ -33,21 +33,22 @@ class Consumer(threading.Thread):
                 curTime = utils.GetTime()
                 logging.info(f"[{curTime}]requestId = {requestId} 开始检测")
                 result = ImgProcess.Detect(data)
-                print("result")
+                print(result)
+                logging.info(f"[{curTime}]result = {result}")
 
 
 if __name__ == '__main__':
     dataQueue = queue.Queue()
     producer = Producer(dataQueue)
+    url = 'http://localhost:8888/Detect'
+    imageurl = ["https://masterwhite.oss-cn-guangzhou.aliyuncs.com/1657593135.jpg",
+                "https://masterwhite.oss-cn-guangzhou.aliyuncs.com/1657593144.jpg"]
     data = {
         "requestId": "12345",
-        "imageUrl": "https://masterwhite.oss-cn-guangzhou.aliyuncs.com/1657593144.jpg",
-        "returnUrl": "12345",
+        "imageUrl": imageurl,
         "type": "gasTank"
     }
-
-    for i in range(10):
-        producer.PutData(Data = data)
-
+    producer.PutData(Data = data)
     consumer = Consumer(ThreadName = "consumerThread", DataQueue = dataQueue)
     consumer.start()
+

@@ -12,21 +12,14 @@ def Detect(data):
     try:
         imageUrl = data.get("imageUrl")
         type = data.get("type")
-        saveImage = data.get("saveImage", False)
-        saveTxt = data.get("saveText", False)
         model = ModelList[type]
         resultList = model(source = imageUrl,
-                           save = saveImage,
-                           save_txt = saveTxt,
-                           save_conf = saveTxt)
-        result = resultList[0]
-        saveDir = result.save_dir
+                           save = True)
+        result = []
+        for i in resultList:
+            result += i.tojson()
 
-        if saveImage or saveTxt:
-            # do something here
-            pass
-
-        return result.tojson()
+        return result
 
     except Exception as e:
         raise e

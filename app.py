@@ -5,7 +5,7 @@ from ProcessServer import Producer, Consumer
 import logging, json, queue, utils, Config
 
 # 配置 logging
-logging.basicConfig(filename = "Logs/app.log", level = logging.INFO)
+logging.basicConfig(filename = "Logs/server.log", level = logging.INFO)
 
 app = Flask(__name__)
 
@@ -55,12 +55,9 @@ def test():
 # 启动服务
 def StartServer():
     try:
-        ip = Config.ip
-        port = Config.port
-        httpServer = WSGIServer((ip, port), app)
-        httpServer.serve_forever()
+        app.run(host = "0.0.0.0", port = 8888, debug = False)
         curTime = utils.GetTime()
-        logging.info(f"[{curTime}]Server started at http://{ip}:{port}")
+        logging.info(f"[{curTime}]服务启动成功")
     except Exception as e:
         raise e
 
