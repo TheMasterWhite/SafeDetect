@@ -44,4 +44,18 @@ class Consumer(threading.Thread):
                 for imgId in imgList:
                     imgUrl = "/www/wwwroot/gasSafe/data/officeImg/" + imgId + ".jpg"
                     result = ImgProcess.Detect(imgUrl, modelType)
+                    curTime = utils.GetTime()
+                    logging.info(f"[{curTime}]图片id = {imgId} 检测完成")
                     RequestServer.PushResult(result, modelType, imgId)
+
+if __name__ == '__main__':
+    dataQueue = queue.Queue()
+    producer = Producer(dataQueue)
+    consumer = Consumer(ThreadName = "consumerThread", DataQueue = dataQueue)
+    consumer.start()
+    data = {
+        "type": "gasTank",
+        "imageData": ["0"]
+    }
+    for i in range(10):
+        producer.PutData(data)
