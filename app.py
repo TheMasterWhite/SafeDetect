@@ -2,7 +2,7 @@ from wsgiref.simple_server import WSGIServer
 from flask import Flask, request, jsonify
 from ultralytics import YOLO
 from ProcessServer import Producer, Consumer
-import logging, json, queue, utils, Config, uuid
+import logging, json, queue, utils
 
 # 配置 logging
 logging.basicConfig(filename = "Logs/server.log",
@@ -17,23 +17,21 @@ app = Flask(__name__)
 dataQueue = queue.Queue()
 producer = Producer(dataQueue)
 consumer = Consumer(ThreadName = "consumerThread", DataQueue = dataQueue)
-# 声明模型
-exhaustFanModel = None
-gasTankModel = None
-gasTeeModel = None
-regulatorModel = None
 
 
 # 检测请求接口
 @app.route('/Detect', methods = ['POST'])
 def Detect():
     try:
-        returnObj = {"Code": 200,
-                     "msg": "OK"}
         requestData = request.json
-        requestId = uuid.uuid1()
+        if 'imageData' not in requestData or not isinstance(requestData['imageData'], list):
+            raise ValueError("imageData参数不存在或不是一个数组")
+
         curTime = utils.GetTime()
-        logging.info(f"[{curTime}]成功接收检测请求,requestId = " + str(requestId))
+        logging.info(f"[{curTime}]成功接收检测请求")
+        returnObj = {"Code": 200,
+                     "msg": "OK",
+                     "requestTime": curTime}
         producer.PutData(requestData)
 
     except Exception as e:

@@ -1,8 +1,6 @@
 import threading, multiprocessing, queue, logging, ImgProcess
 import utils, RequestServer
 
-dataQueue = queue.Queue()
-
 logging.basicConfig(filename = "Logs/server.log",
                     filemode = 'a',
                     level = logging.INFO)
@@ -47,6 +45,7 @@ class Consumer(threading.Thread):
                     curTime = utils.GetTime()
                     logging.info(f"[{curTime}]图片id = {imgId} 检测完成")
                     RequestServer.PushResult(result, modelType, imgId)
+
 
 if __name__ == '__main__':
     dataQueue = queue.Queue()
