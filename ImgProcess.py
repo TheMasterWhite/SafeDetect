@@ -9,9 +9,9 @@ ModelList = {"exhaustFan": YOLO(model = "Weights/exhaustFan.pt", task = "detect"
 
 
 # YOLO¼ì²â½Ó¿Ú
-def Detect(ImageUrl, Type):
+def Detect(ImageUrl):
     try:
-        model = ModelList[Type]
+        model = ModelList["gasTank"]
         resultList = model(source = ImageUrl)
         result = resultList[0]
         return json.loads(result.tojson())

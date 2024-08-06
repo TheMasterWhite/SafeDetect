@@ -54,12 +54,22 @@ def StartServer():
     except Exception as e:
         raise e
 
+#
+# if __name__ == "__main__":
+#     try:
+#         consumer.start()
+#         StartServer()
+#
+#     except Exception as e:
+#         curTime = utils.GetTime()
+#         logging.error(f"[{curTime}]" + str(e))
 
 if __name__ == "__main__":
-    try:
-        consumer.start()
-        StartServer()
-
-    except Exception as e:
-        curTime = utils.GetTime()
-        logging.error(f"[{curTime}]" + str(e))
+    dataQueue = queue.Queue()
+    producer = Producer(dataQueue)
+    consumer = Consumer(ThreadName = "consumerThread", DataQueue = dataQueue)
+    consumer.start()
+    data = {
+        "imageData": ["0"]
+    }
+    producer.PutData(data)
