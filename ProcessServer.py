@@ -18,7 +18,7 @@ class Producer:
     def PutData(self, Data):
         self.DataQueue.put(Data)
         curTime = utils.GetTime()
-        logging.info(f"[{curTime}]任务请求进入队列")
+        logging.info(f"[{curTime}]Task request enters the queue")
 
 
 class Consumer(threading.Thread):
@@ -27,7 +27,7 @@ class Consumer(threading.Thread):
         self.ThreadName = ThreadName
         self.DataQueue = DataQueue
         curTime = utils.GetTime()
-        logging.info(f"[{curTime}]{self.ThreadName} 线程启动成功")
+        logging.info(f"[{curTime}]{self.ThreadName} Thread started successfully")
 
 
     def run(self):
@@ -36,14 +36,14 @@ class Consumer(threading.Thread):
                 data = self.DataQueue.get()
                 imgList = data.get("imageData")
                 curTime = utils.GetTime()
-                logging.info(f"[{curTime}]开始检测")
+                logging.info(f"[{curTime}]Start detection")
                 # 获取检测结果并发送到java后端
                 for imgId in imgList:
                     # imgUrl = "/www/wwwroot/gasSafe/data/officeImg/" + imgId + ".jpg"
                     imgUrl = "https://masterwhite.oss-cn-guangzhou.aliyuncs.com/1657593135.jpg"
                     result = ImgProcess.Detect(imgUrl)
                     curTime = utils.GetTime()
-                    logging.info(f"[{curTime}]图片id = {imgId} 检测完成")
+                    logging.info(f"[{curTime}]Image ID = {imgId} Detecting completed")
                     RequestServer.PushResult(result, "gasTank", imgId)
 
 
