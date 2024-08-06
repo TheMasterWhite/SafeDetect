@@ -1,4 +1,5 @@
 from ultralytics import YOLO
+import json
 
 # º”‘ÿƒ£–Õ
 ModelList = {"exhaustFan": YOLO(model = "Weights/exhaustFan.pt", task = "detect"),
@@ -13,7 +14,7 @@ def Detect(ImageUrl, Type):
         model = ModelList[Type]
         resultList = model(source = ImageUrl)
         result = resultList[0]
-        return json.loads(result)
+        return json.loads(result.tojson())
 
     except Exception as e:
         raise e

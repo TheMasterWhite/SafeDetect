@@ -3,7 +3,12 @@ import logging
 import requests, json
 import utils
 
-data2 = {"data": 123}
+logging.basicConfig(filename = "Logs/server.log",
+                    filemode = 'a',
+                    level = logging.INFO)
+logging.basicConfig(filename = "Logs/server.log",
+                    filemode = 'a',
+                    level = logging.ERROR)
 
 
 # 发送结果请求
@@ -33,21 +38,5 @@ def PushResult(Result, Type, ImgId):
             logging.info(f"[{curTime}]结果发送失败")
 
     except Exception as e:
-        raise e
-
-
-if __name__ == "__main__":
-    list = [
-        {
-            "name": "Gas tank",
-            "class": 0,
-            "confidence": 0.97412,
-            "box": {
-                "x1": 46.93078,
-                "y1": 35.63008,
-                "x2": 455.09277,
-                "y2": 866.84601
-            }
-        }
-    ]
-    PushResult(list, "gasTank", 0)
+        curTime = utils.GetTime()
+        logging.error(f"[{curTime}]{str(e)}")

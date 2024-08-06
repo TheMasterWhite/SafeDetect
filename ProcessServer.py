@@ -10,6 +10,7 @@ logging.basicConfig(filename = "Logs/server.log",
                     filemode = 'a',
                     level = logging.ERROR)
 
+
 class Producer:
 
     def __init__(self, DataQueue):
@@ -44,4 +45,3 @@ class Consumer(threading.Thread):
                     imgUrl = "/www/wwwroot/gasSafe/data/officeImg/" + imgId + ".jpg"
                     result = ImgProcess.Detect(imgUrl, modelType)
                     RequestServer.PushResult(result, modelType, imgId)
-
