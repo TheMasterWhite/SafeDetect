@@ -2,16 +2,18 @@ import requests, json
 
 
 if __name__ == "__main__":
-    url = 'http://192.168.2.36:8888/Detect'
+    url = 'http://222.240.1.44:38080/findImgsPage'
     imageurl = ["https://masterwhite.oss-cn-guangzhou.aliyuncs.com/1657593135.jpg",
            "https://masterwhite.oss-cn-guangzhou.aliyuncs.com/1657593144.jpg"]
 
     data = {
-        "requestId": "10086",
-        "imageUrl": imageurl,
-        "type": "gasTank",
+        "imgId" : "555",
+        "page":1,
+        "pageSize":1
+
     }
     headers = {'Content-Type': 'application/json'}
-    response = requests.post(url, json = data, headers = headers, timeout = 50)
+    data2 = {}
+    response = requests.get(url, json = data2, headers = headers, timeout = 50)
 
-    print(response)
+    print(json.dumps(response.json(), indent = 4))

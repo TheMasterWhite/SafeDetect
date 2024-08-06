@@ -8,18 +8,12 @@ ModelList = {"exhaustFan": YOLO(model = "Weights/exhaustFan.pt", task = "detect"
 
 
 # YOLO¼ì²â½Ó¿Ú
-def Detect(data):
+def Detect(ImageUrl, Type):
     try:
-        imageUrl = data.get("imageUrl")
-        type = data.get("type")
-        model = ModelList[type]
-        resultList = model(source = imageUrl,
-                           save = True)
-        result = []
-        for i in resultList:
-            result += i.tojson()
-
-        return result
+        model = ModelList[Type]
+        resultList = model(source = ImageUrl)
+        result = resultList[0]
+        return json.loads(result)
 
     except Exception as e:
         raise e

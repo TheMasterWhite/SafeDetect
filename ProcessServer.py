@@ -1,8 +1,14 @@
 import threading, multiprocessing, queue, logging, ImgProcess
-import utils
+import utils, RequestServer
 
 dataQueue = queue.Queue()
-logging.basicConfig(filename = "Logs/server.log", level = logging.INFO)
+
+logging.basicConfig(filename = "Logs/server.log",
+                    filemode = 'a',
+                    level = logging.INFO)
+logging.basicConfig(filename = "Logs/server.log",
+                    filemode = 'a',
+                    level = logging.ERROR)
 
 class Producer:
 
@@ -29,26 +35,13 @@ class Consumer(threading.Thread):
         while True:
             if not self.DataQueue.empty():
                 data = self.DataQueue.get()
-                requestId = data.get("requestId")
+                modelType = data.get("type")
+                imgList = data.get("imageData")
                 curTime = utils.GetTime()
-                logging.info(f"[{curTime}]requestId = {requestId} 开始检测")
-                result = ImgProcess.Detect(data)
-                print(result)
-                logging.info(f"[{curTime}]result = {result}")
-
-
-if __name__ == '__main__':
-    dataQueue = queue.Queue()
-    producer = Producer(dataQueue)
-    url = 'http://localhost:8888/Detect'
-    imageurl = ["https://masterwhite.oss-cn-guangzhou.aliyuncs.com/1657593135.jpg",
-                "https://masterwhite.oss-cn-guangzhou.aliyuncs.com/1657593144.jpg"]
-    data = {
-        "requestId": "12345",
-        "imageUrl": imageurl,
-        "type": "gasTank"
-    }
-    producer.PutData(Data = data)
-    consumer = Consumer(ThreadName = "consumerThread", DataQueue = dataQueue)
-    consumer.start()
+                logging.info(f"[{curTime}]开始检测")
+                # 获取检测结果并发送到java后端
+                for imgId in imgList:
+                    imgUrl = "/www/wwwroot/gasSafe/data/officeImg/" + imgId + ".jpg"
+                    result = ImgProcess.Detect(imgUrl, modelType)
+                    RequestServer.PushResult(result, modelType, imgId)
 

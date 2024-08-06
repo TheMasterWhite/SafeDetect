@@ -1,26 +1,14 @@
+import logging
+import sys
+
 from flask import Flask, request, jsonify
 from ultralytics import YOLO
 
-app = Flask(__name__)
-app.config['AIOHTTP_ASYNC_RUN_SIGNAL'] = True
-
-
-@app.route('/detect/predict', methods = ["GET", "POST"])
-def Detect():
-    model = YOLO("Weights/Gas tank煤气罐/best.pt",
-                 task = "detect")
-    data = request.json
-    source = data.get("source")
-    results = model(source = source,
-                    save = True)
-    imgNumber = len(results)
-
-
-
-
 if __name__ == '__main__':
-    model = YOLO("Weights/gasTank.pt",
-                 task = "detect")
-    results = model("Data/1657593144.jpg")
-    result = results[0]
-    print(result.keypoints)
+    ModelList = {"exhaustFan": YOLO(model = "Weights/exhaustFan.pt", task = "detect"),
+                 "gasTank": YOLO(model = "Weights/gasTank.pt", task = "detect"),
+                 "gasTee": YOLO(model = "Weights/gasTee.pt", task = "detect"),
+                 "regulator": YOLO(model = "Weights/regulator.pt", task = "detect")}
+    result = ModelList["exhaustFan"](source = "https://masterwhite.oss-cn-guangzhou.aliyuncs.com/1657593135.jpg",
+                                     save = True)
+    print(result)
