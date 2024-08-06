@@ -33,9 +33,9 @@ def PushResult(Result, Type, ImgId):
         curTime = utils.GetTime()
         status = message["msg"]
         if status == "success":
-            logging.info(f"[{curTime}]结果发送成功")
+            logging.info(f"[{curTime}]Results sent successfully")
         else:
-            logging.info(f"[{curTime}]结果发送失败")
+            logging.info(f"[{curTime}]Results sent failed")
 
     except Exception as e:
         curTime = utils.GetTime()

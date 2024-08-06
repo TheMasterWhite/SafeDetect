@@ -17,6 +17,7 @@ app = Flask(__name__)
 dataQueue = queue.Queue()
 producer = Producer(dataQueue)
 consumer = Consumer(ThreadName = "consumerThread", DataQueue = dataQueue)
+consumer.start()
 
 
 # 检测请求接口
@@ -25,10 +26,10 @@ def Detect():
     try:
         requestData = request.json
         if 'imageData' not in requestData or not isinstance(requestData['imageData'], list):
-            raise ValueError("imageData参数不存在或不是一个数组")
+            raise ValueError("The imageData parameter does not exist or is not an array")
 
         curTime = utils.GetTime()
-        logging.info(f"[{curTime}]成功接收检测请求")
+        logging.info(f"[{curTime}]Successfully received the detection request")
         returnObj = {"Code": 200,
                      "msg": "OK",
                      "requestTime": curTime}
@@ -50,26 +51,9 @@ def StartServer():
     try:
         app.run(host = "0.0.0.0", port = 8888, debug = False)
         curTime = utils.GetTime()
-        logging.info(f"[{curTime}]服务启动成功")
+        logging.info(f"[{curTime}]Service started successfully")
     except Exception as e:
         raise e
 
-#
-# if __name__ == "__main__":
-#     try:
-#         consumer.start()
-#         StartServer()
-#
-#     except Exception as e:
-#         curTime = utils.GetTime()
-#         logging.error(f"[{curTime}]" + str(e))
 
-if __name__ == "__main__":
-    dataQueue = queue.Queue()
-    producer = Producer(dataQueue)
-    consumer = Consumer(ThreadName = "consumerThread", DataQueue = dataQueue)
-    consumer.start()
-    data = {
-        "imageData": ["0"]
-    }
-    producer.PutData(data)
+StartServer()
