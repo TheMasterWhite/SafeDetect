@@ -53,7 +53,8 @@ def StartServer():
         curTime = utils.GetTime()
         logging.info(f"[{curTime}]Service started successfully")
     except Exception as e:
-        raise e
+        logging.error(f"[{curTime}]" + str(e))
 
 
-StartServer()
+if __name__ == "__main__":
+    StartServer()

@@ -7,6 +7,6 @@ if __name__ == "__main__":
         "imageData": ["0"]
     }
     headers = {'Content-Type': 'application/json'}
-    response = requests.post(url, json = data, headers = headers, timeout = 50)
+    response = requests.post(url, json = data, headers = headers)
     result = response.json()
     print(result)
