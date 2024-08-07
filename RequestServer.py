@@ -9,12 +9,12 @@ logging.basicConfig(filename = "Logs/server.log",
 
 
 # 发送结果请求
-def PushResult(Result, Type, ImgId):
+def PushResult(Result, Type, ImgId, SafeType):
     try:
         url = "http://222.240.1.44:38080/addInfer"
         data = {"oper": Type,
                 "imgId": ImgId,
-                "safeType": "0",
+                "safeType": SafeType,
                 "indexUrl": "NULL"}
         headers = {'Content-Type': 'application/json'}
         resultContent = ""
