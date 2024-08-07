@@ -4,9 +4,7 @@ import utils, RequestServer
 logging.basicConfig(filename = "Logs/server.log",
                     filemode = 'a',
                     level = logging.INFO)
-logging.basicConfig(filename = "Logs/server.log",
-                    filemode = 'a',
-                    level = logging.ERROR)
+modelList = ["exhaustFan", "gasTank", "gasTee", "regulator"]
 
 
 class Producer:
@@ -37,20 +35,28 @@ class Consumer(threading.Thread):
                 imgList = data.get("imageData")
                 curTime = utils.GetTime()
                 logging.info(f"[{curTime}]Start detection")
-                # 获取检测结果并发送到java后端
+                # 对传入图片列表获取检测结果并发送到java后端
                 for imgId in imgList:
-                    # imgUrl = "/www/wwwroot/gasSafe/data/officeImg/" + imgId + ".jpg"
-                    imgUrl = "https://masterwhite.oss-cn-guangzhou.aliyuncs.com/1657593135.jpg"
-                    result = ImgProcess.Detect(imgUrl)
+                    cnt = -1  # 模型类型下标
+                    # imgUrl = "https://masterwhite.oss-cn-guangzhou.aliyuncs.com/1657593135.jpg"
+                    imgUrl = "/www/wwwroot/gasSafe/data/officeImg/" + imgId + ".jpg"
+
+                    # 获取单张图片对所有模型的检测结果列表
+                    resultList = ImgProcess.Detect(imgUrl)
                     curTime = utils.GetTime()
-                    logging.info(f"[{curTime}]Image ID = {imgId} Detecting completed")
-                    RequestServer.PushResult(result, "gasTank", imgId)
+                    logging.info(f"[{curTime}]Image ID = {imgId} Detection completed")
+                    # 对单张图片的所有结果发送到后端
+                    for result in resultList:
+                        cnt += 1
+                        if result == []: continue
+                        RequestServer.PushResult(result, modelList[cnt], imgId)
+
 
 
 if __name__ == '__main__':
     dataQueue = queue.Queue()
     producer = Producer(dataQueue)
-    consumer = Consumer(ThreadName = "consumerThread", DataQueue = dataQueue)
+    consumer = Consumer(ThreadName = "Consumer", DataQueue = dataQueue)
     consumer.start()
     data = {
         "imageData": ["0"]

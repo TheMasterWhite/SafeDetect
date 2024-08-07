@@ -11,4 +11,4 @@ if __name__ == '__main__':
                  "regulator": YOLO(model = "Weights/regulator.pt", task = "detect")}
     result = ModelList["exhaustFan"](source = "https://masterwhite.oss-cn-guangzhou.aliyuncs.com/1657593135.jpg",
                                      save = True)
-    print(result)
+    print(result[0].tojson())
