@@ -6,9 +6,6 @@ import utils
 logging.basicConfig(filename = "Logs/server.log",
                     filemode = 'a',
                     level = logging.INFO)
-logging.basicConfig(filename = "Logs/server.log",
-                    filemode = 'a',
-                    level = logging.ERROR)
 
 
 # 发送结果请求
@@ -21,7 +18,6 @@ def PushResult(Result, Type, ImgId):
                 "indexUrl": "NULL"}
         headers = {'Content-Type': 'application/json'}
         resultContent = ""
-
         # 遍历所有结果框获取数据
         for img in Result:
             box = img["box"]

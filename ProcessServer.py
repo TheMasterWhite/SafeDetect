@@ -38,8 +38,8 @@ class Consumer(threading.Thread):
                 # 对传入图片列表获取检测结果并发送到java后端
                 for imgId in imgList:
                     cnt = -1  # 模型类型下标
-                    # imgUrl = "https://masterwhite.oss-cn-guangzhou.aliyuncs.com/1657593135.jpg"
-                    imgUrl = "/www/wwwroot/gasSafe/data/officeImg/" + imgId + ".jpg"
+                    imgUrl = "https://masterwhite.oss-cn-guangzhou.aliyuncs.com/1657593135.jpg"
+                    #imgUrl = "/www/wwwroot/gasSafe/data/officeImg/" + imgId + ".jpg"
 
                     # 获取单张图片对所有模型的检测结果列表
                     resultList = ImgProcess.Detect(imgUrl)
