@@ -49,7 +49,9 @@ class Consumer(threading.Thread):
                     # 对单张图片的所有结果发送到后端
                     for result in resultList:
                         cnt += 1
-                        if result == []: continue
+                        if result == []:
+                            logging.info(f"[{result}is null]")
+                            continue
                         RequestServer.PushResult(Result = result,
                                                  Type = modelList[cnt],
                                                  ImgId = imgId,
