@@ -1,7 +1,7 @@
 import requests, json
 
 if __name__ == "__main__":
-    url = 'http://222.240.1.44:38080/findSafeType'
+    url = 'http://222.240.1.44:48888/Detect'
 
     data = {
         "imageData": ["0"]

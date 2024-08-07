@@ -16,7 +16,7 @@ def Detect(ImageUrl):
             tmpResult = model(source = ImageUrl)
             resultList.append(tmpResult[0].tojson())
 
-        return json.loads(resultList)
+        return resultList
 
     except Exception as e:
         raise e
