@@ -54,14 +54,16 @@ class Consumer(threading.Thread):
                         safeType = SafeTypeList[cnt]
 
                         if result == []:
-                            RequestServer.PushNullResult(Type = type,
-                                                         ImgId = imgId,
-                                                         SafeType = safeType)
+                            RequestServer.PushResult(Type = type,
+                                                     ImgId = imgId,
+                                                     SafeType = safeType,
+                                                     isNull = True)
                         else:
                             RequestServer.PushResult(Result = result,
                                                      Type = type,
                                                      ImgId = imgId,
-                                                     SafeType = safeType)
+                                                     SafeType = safeType,
+                                                     isNull = False)
 
 
 if __name__ == '__main__':
