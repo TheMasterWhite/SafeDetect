@@ -40,7 +40,8 @@ def Detect():
         requestData = request.json
         logging.error(f"[{curTime}]" + str(e))
         returnObj = {"Code": 400,
-                     "msg": str(e)}
+                     "msg": str(e),
+                     "requestTime": curTime}
 
     finally:
         return jsonify(returnObj)
