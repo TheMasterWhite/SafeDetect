@@ -56,7 +56,7 @@ class Consumer(threading.Thread):
                         if result == []:
                             RequestServer.PushNullResult(Type = type,
                                                          ImgId = imgId,
-                                                         SafeType = SsafeType)
+                                                         SafeType = safeType)
                         else:
                             RequestServer.PushResult(Result = result,
                                                      Type = type,
