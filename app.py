@@ -30,7 +30,7 @@ def Detect():
 
         curTime = utils.GetTime()
         logging.info(f"[{curTime}]Successfully received the detection request")
-        returnObj = {"Code": 200,
+        returnObj = {"code": 200,
                      "msg": "OK",
                      "requestTime": curTime}
         producer.PutData(requestData)
@@ -39,7 +39,7 @@ def Detect():
         curTime = utils.GetTime()
         requestData = request.json
         logging.error(f"[{curTime}]" + str(e))
-        returnObj = {"Code": 400,
+        returnObj = {"code": 400,
                      "msg": str(e),
                      "requestTime": curTime}
 
