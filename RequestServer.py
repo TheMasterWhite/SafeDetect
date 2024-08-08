@@ -11,6 +11,7 @@ logging.basicConfig(filename = "Logs/server.log",
 # 发送结果请求
 def PushResult(Result, Type, ImgId, SafeType, isNull = False):
     try:
+        message = None
         url = "http://222.240.1.44:38080/addInfer"
         data = {"oper": Type,
                 "imgId": ImgId,
