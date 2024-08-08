@@ -37,3 +37,27 @@ def PushResult(Result, Type, ImgId, SafeType):
     except Exception as e:
         curTime = utils.GetTime()
         logging.error(f"[{curTime}]{str(e)}")
+
+
+def PushNullResult(Type, ImgId, SafeType):
+    try:
+        url = "http://222.240.1.44:38080/addInfer"
+        data = {"oper": Type,
+                "imgId": ImgId,
+                "safeType": SafeType,
+                "indexUrl": "NULL"}
+        headers = {'Content-Type': "application/json"}
+        response = requests.post(url, data = json.dumps(data), headers = headers)
+        message = json.loads(response.text)
+
+        # 记录日志
+        curTime = utils.GetTime()
+        status = message["msg"]
+        if status == "success":
+            logging.info(f"[{curTime}]Null results sent successfully")
+        else:
+            logging.info(f"[{curTime}]Null results sent failed")
+
+    except Exception as e:
+        curTime = utils.GetTime()
+        logging.error(f"[{curTime}]{str(e)}")

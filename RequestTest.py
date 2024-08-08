@@ -1,18 +1,14 @@
 import requests, json
 
 if __name__ == "__main__":
-    url = 'http://222.240.1.44:38080/addInfer'
+    url = 'http://222.240.1.44:48888/Detect'
 
     data = {
-        "imageData": ["2","3","4","5","6","7","8","9"]
-    }
-    data2 = {
-        "oper":"Test",
-        "imgId":"2",
-        "safeType":"6",
-        "indexUrl":"666 666 666 666"
+        "imageData": ["1"]
     }
     headers = {'Content-Type': 'application/json'}
-    response = requests.post(url, json = data2, headers = headers)
-    result = response.json()
-    print(result)
+    for i in range(2001):
+        data["imageData"] = [str(i)]
+        response = requests.post(url, json = data, headers = headers)
+        result = response.json()
+        print(result)

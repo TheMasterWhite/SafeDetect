@@ -48,14 +48,20 @@ class Consumer(threading.Thread):
                     logging.info(f"[{curTime}]Image ID = {imgId} Detection completed")
                     # 对单张图片的所有结果发送到后端
                     for result in resultList:
+                        # 获取参数
                         cnt += 1
+                        type = modelList[cnt]
+                        safeType = SafeTypeList[cnt]
+
                         if result == []:
-                            logging.info(f"[{result}is null]")
-                            continue
-                        RequestServer.PushResult(Result = result,
-                                                 Type = modelList[cnt],
-                                                 ImgId = imgId,
-                                                 SafeType = SafeTypeList[cnt])
+                            RequestServer.PushNullResult(Type = type,
+                                                         ImgId = imgId,
+                                                         SafeType = SsafeType)
+                        else:
+                            RequestServer.PushResult(Result = result,
+                                                     Type = type,
+                                                     ImgId = imgId,
+                                                     SafeType = safeType)
 
 
 if __name__ == '__main__':
