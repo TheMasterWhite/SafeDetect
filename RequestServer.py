@@ -45,7 +45,7 @@ def PushNullResult(Type, ImgId, SafeType):
         data = {"oper": Type,
                 "imgId": ImgId,
                 "safeType": SafeType,
-                "indexUrl": "NULL"}
+                "indexUrl": "nullPoint"}
         headers = {'Content-Type': "application/json"}
         response = requests.post(url, data = json.dumps(data), headers = headers)
         message = json.loads(response.text)
